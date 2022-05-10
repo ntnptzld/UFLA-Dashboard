@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 07. Feb 2022 um 13:34
--- Server-Version: 10.4.22-MariaDB
--- PHP-Version: 8.0.13
+-- Erstellungszeit: 10. Mai 2022 um 16:06
+-- Server-Version: 10.4.24-MariaDB
+-- PHP-Version: 7.4.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35256,6 +35256,30 @@ INSERT INTO `reporting` (`id`, `jahr`, `> 49,0`, `49,0`, `48,9`, `48,8`, `48,7`,
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `unterfrequenzstufen`
+--
+
+CREATE TABLE `unterfrequenzstufen` (
+  `id` int(5) NOT NULL,
+  `Umspannwerk` char(30) NOT NULL,
+  `Leistung P [MW]` double NOT NULL,
+  `Netzbetreiber` char(20) NOT NULL,
+  `Jahr` year(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `unterfrequenzstufen`
+--
+
+INSERT INTO `unterfrequenzstufen` (`id`, `Umspannwerk`, `Leistung P [MW]`, `Netzbetreiber`, `Jahr`) VALUES
+(1, 'Auerbach/Erzgebirge', 5.6, 'Mitnetz Strom', 2020),
+(2, 'Marienberg', 1.44, 'Mitnetz Strom', 2020),
+(3, 'Neudorf', 2.27, 'Mitnetz Strom', 2020),
+(4, 'AuerbachVogtland', 10.14, 'Mitnetz Strom', 2020);
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `users`
 --
 
@@ -35288,7 +35312,8 @@ INSERT INTO `users` (`id`, `full_name`, `email`, `password`) VALUES
 (15, 'Dirk Hollmach', 'dirk.hollmach@mitnetz-strom.de', 'e048ed103d8f3471bafd30686538489c'),
 (16, 'Dirk Hünlich', 'dirk.Huenlich@mitnetz-strom.de', '6f0ffc9b12c2a09d96aa3179fc9d2987'),
 (17, 'Dirk Sattur', 'dirk.Sattur@mitnetz-strom.de', '6c2d4f3435650db1ae9be19a37dcf231'),
-(18, 'Schaltleitung', 'schaltleitung@mitnetz-strom.de', '9f0fd4a8bc5f4829376c5eb317dc48a5');
+(18, 'Schaltleitung', 'schaltleitung@mitnetz-strom.de', '9f0fd4a8bc5f4829376c5eb317dc48a5'),
+(20, 'test test', 'test@gmail.com', 'test');
 
 --
 -- Indizes der exportierten Tabellen
@@ -35306,6 +35331,12 @@ ALTER TABLE `monitoring`
 ALTER TABLE `reporting`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `jahr` (`jahr`);
+
+--
+-- Indizes für die Tabelle `unterfrequenzstufen`
+--
+ALTER TABLE `unterfrequenzstufen`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indizes für die Tabelle `users`
@@ -35331,10 +35362,16 @@ ALTER TABLE `reporting`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT für Tabelle `unterfrequenzstufen`
+--
+ALTER TABLE `unterfrequenzstufen`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
