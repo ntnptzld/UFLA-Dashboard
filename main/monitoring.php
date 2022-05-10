@@ -95,15 +95,6 @@
     <!-- Laden für die Erstellung des Diagramms und Übertragung der eingegeben Werte relevanter Skripte -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" 
-    integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" 
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.1/chartjs-plugin-zoom.min.js" 
-    integrity="sha512-klQv6lz2YR+MecyFYMFRuU2eAl8IPRo6zHnsc9n142TJuJHS8CG0ix4Oq9na9ceeg1u5EkBfZsFcV3U7J51iew==" 
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     
     <script>
         //Setup für ChartJS Diagramm
@@ -160,6 +151,26 @@
             type: 'line',
             data,
             options: {
+              plugins: {
+                title: {
+                  display: true,
+                  text: ['Zeitreihen der aktivierten Abwurfleistungen pro Unterfrequenz-Auslösestufe', 'in viertelstündlicher zeitlicher Auflösung'],
+                  font: {
+                    size: 24
+                  }
+                },
+                tooltip: {
+                  yAlign: 'bottom',
+                  titleAlign: 'center',
+                  bodyAlign: 'center',
+                  displayColors: false,
+                  callbacks: {
+                    beforeTitle: titleBefore,
+                    beforeLabel: lableBefore,
+                    afterLabel: labelAfter
+                    }
+                  }
+              },
               scales: {
                 y: {
                   beginAtZero: true,
@@ -190,43 +201,7 @@
                     }
                   }
                 }
-              },
-              plugins: {
-                title: {
-                  display: true,
-                  text: ['Zeitreihen der aktivierten Abwurfleistungen pro Unterfrequenz-Auslösestufe', 'in viertelstündlicher zeitlicher Auflösung'],
-                  font: {
-                    size: 24
-                  }
-                },
-                zoom: {
-                  pan: {
-                    enabled: true,
-                    mode: 'x'
-                  },
-                  limits: {
-                    x: {minRange: 20}
-                  },
-                  zoom: {
-                    wheel: {
-                      enabled: true,
-                      speed: 0.05,
-                    },
-                    mode: 'x'
-                  }                    
-                },
-                tooltip: {
-                  yAlign: 'bottom',
-                  titleAlign: 'center',
-                  bodyAlign: 'center',
-                  displayColors: false,
-                  callbacks: {
-                    beforeTitle: titleBefore,
-                    beforeLabel: lableBefore,
-                    afterLabel: labelAfter
-                    }
-                  }
-              }              
+              }
             }
         };
 
