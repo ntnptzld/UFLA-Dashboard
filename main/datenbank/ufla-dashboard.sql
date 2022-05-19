@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 10. Mai 2022 um 16:06
+-- Erstellungszeit: 19. Mai 2022 um 15:05
 -- Server-Version: 10.4.24-MariaDB
 -- PHP-Version: 7.4.28
 
@@ -35287,33 +35287,35 @@ CREATE TABLE `users` (
   `id` int(10) NOT NULL,
   `full_name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `usergruppe` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Daten für Tabelle `users`
 --
 
-INSERT INTO `users` (`id`, `full_name`, `email`, `password`) VALUES
-(1, 'Mathias Dumke', 'mathias.dumke@mitnetz-strom.de', 'b308027d67598999fc787544830a7f21'),
-(2, 'Jens Paul', 'jens.paul@mitnetz-strom.de', '84e087c7341035edeaa3ddbd5bda6367'),
-(3, 'Michael Blank', 'michael.Blank@mitnetz-strom.de', 'c80ab5d20fa93b6dd944ffbaa8431305'),
-(4, 'Jens Wierzchowski', 'jens.Wierzchowski@mitnetz-gas.de', '19107beec427d2fc2b10cc939b63d474'),
-(5, 'Jens Arnold', 'jens.arnold@minetz-strom.de', 'd60457c779e40051470d5fe510d1f785'),
-(6, 'Karsten Henze', 'karsten.henze@mitnetz-strom.de', 'adf1b25c5149fb8b3300185dc46fc541'),
-(7, 'Robert Ahrens', 'robert.ahrens@mitnetz-strom.de', '299510c92ccb4ce5ab36c206bd0a90cd'),
-(8, 'Marco Blättermann', 'marco.blaettermann@mitnetz-strom.de', '6215af1879e78574ef1e74bf5a1a9cf0'),
-(9, 'Julius Fangmeier', 'julius.fangmeier@mitnetz-strom.de', 'e994c32c34f5d8ae50f824de9f61e37e'),
-(10, 'Norbert Günther', 'norbert.guenther@mitnetz-strom.de', 'd23dec7da48b62ec9f5501e1a9d429d4'),
-(11, 'Holger Erdmann', 'holger.erdmann@mitnetz-gas.de', 'f8cee1954b53876b6c110eeb31b9a875'),
-(12, 'Frank-Uwe Gutscher', 'frank-uwe.gutscher@mitnetz-strom.de', '9edc4c3a05a7946a6352930f355f1a65'),
-(13, 'Frank Beyer', 'frank.beyer@mitnetz-strom.de', '7b460453791e5f5bf79c9810078dc063'),
-(14, 'Andreas Persin', 'andreas.persin@mitnetz-strom.de', '5c41dce958629982b6a397e81d203462'),
-(15, 'Dirk Hollmach', 'dirk.hollmach@mitnetz-strom.de', 'e048ed103d8f3471bafd30686538489c'),
-(16, 'Dirk Hünlich', 'dirk.Huenlich@mitnetz-strom.de', '6f0ffc9b12c2a09d96aa3179fc9d2987'),
-(17, 'Dirk Sattur', 'dirk.Sattur@mitnetz-strom.de', '6c2d4f3435650db1ae9be19a37dcf231'),
-(18, 'Schaltleitung', 'schaltleitung@mitnetz-strom.de', '9f0fd4a8bc5f4829376c5eb317dc48a5'),
-(20, 'test test', 'test@gmail.com', 'test');
+INSERT INTO `users` (`id`, `full_name`, `email`, `password`, `usergruppe`) VALUES
+(1, 'Mathias Dumke', 'mathias.dumke@mitnetz-strom.de', 'b308027d67598999fc787544830a7f21', 'user'),
+(2, 'Jens Paul', 'jens.paul@mitnetz-strom.de', '84e087c7341035edeaa3ddbd5bda6367', 'user'),
+(3, 'Michael Blank', 'michael.Blank@mitnetz-strom.de', 'c80ab5d20fa93b6dd944ffbaa8431305', 'user'),
+(4, 'Jens Wierzchowski', 'jens.Wierzchowski@mitnetz-gas.de', '19107beec427d2fc2b10cc939b63d474', 'user'),
+(5, 'Jens Arnold', 'jens.arnold@minetz-strom.de', 'd60457c779e40051470d5fe510d1f785', 'user'),
+(6, 'Karsten Henze', 'karsten.henze@mitnetz-strom.de', 'adf1b25c5149fb8b3300185dc46fc541', 'user'),
+(7, 'Robert Ahrens', 'robert.ahrens@mitnetz-strom.de', '299510c92ccb4ce5ab36c206bd0a90cd', 'user'),
+(8, 'Marco Blättermann', 'marco.blaettermann@mitnetz-strom.de', '6215af1879e78574ef1e74bf5a1a9cf0', 'user'),
+(9, 'Julius Fangmeier', 'julius.fangmeier@mitnetz-strom.de', 'e994c32c34f5d8ae50f824de9f61e37e', 'user'),
+(10, 'Norbert Günther', 'norbert.guenther@mitnetz-strom.de', 'd23dec7da48b62ec9f5501e1a9d429d4', 'user'),
+(11, 'Holger Erdmann', 'holger.erdmann@mitnetz-gas.de', 'f8cee1954b53876b6c110eeb31b9a875', 'user'),
+(12, 'Frank-Uwe Gutscher', 'frank-uwe.gutscher@mitnetz-strom.de', '9edc4c3a05a7946a6352930f355f1a65', 'user'),
+(13, 'Frank Beyer', 'frank.beyer@mitnetz-strom.de', '7b460453791e5f5bf79c9810078dc063', 'user'),
+(14, 'Andreas Persin', 'andreas.persin@mitnetz-strom.de', '5c41dce958629982b6a397e81d203462', 'user'),
+(15, 'Dirk Hollmach', 'dirk.hollmach@mitnetz-strom.de', 'e048ed103d8f3471bafd30686538489c', 'user'),
+(16, 'Dirk Hünlich', 'dirk.Huenlich@mitnetz-strom.de', '6f0ffc9b12c2a09d96aa3179fc9d2987', 'user'),
+(17, 'Dirk Sattur', 'dirk.Sattur@mitnetz-strom.de', '6c2d4f3435650db1ae9be19a37dcf231', 'user'),
+(18, 'Schaltleitung', 'schaltleitung@mitnetz-strom.de', '9f0fd4a8bc5f4829376c5eb317dc48a5', 'user'),
+(20, 'test test', 'test@gmail.com', 'test', 'user'),
+(21, 'admin admin', 'admin@mitnetzstrom.de', 'no2l0elze781h1i6y3hxwk8akmn2az', 'admin');
 
 --
 -- Indizes der exportierten Tabellen
@@ -35371,7 +35373,7 @@ ALTER TABLE `unterfrequenzstufen`
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
