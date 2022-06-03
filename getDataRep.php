@@ -5,7 +5,6 @@ include 'db_config.php';
 //Entgegennahme des Eingabewertes (Jahr) vom Dropdown-Menü
 $yearSelected = $_POST['yearSelected'];
 
-
 //Sicherheitsüberpürfung, dass tatsächlich gültige Werte übergeben wurden, ansonsten Festlegung der ursprünglichen Standardwerte
 if ($yearSelected == null) {
     $year = date("Y") - 1;

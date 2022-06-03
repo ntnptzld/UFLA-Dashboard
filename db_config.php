@@ -8,10 +8,13 @@ $tableUsers = "users";                //Name der Datenbank-Tabelle für die Dash
 $tableRepTime = "jahr";               //Spaltenname der Datenbanktabelle Reporting zur Entnahme der zeitlich korrekten Daten
 $tableMonTime = "Zeitschritt";        //Spaltenname der Datenbanktabelle Monitoring zur Entnahme der zeitlich korrekten Daten
 
+$linkRepUW_Üb = "reporting/Umspannwerke-Übersicht.php";    //URL der Seite der Übersicht aller Umspannwerke in einer 
+$linkRepUW_Detail = "Umspannwerke-Detail.php";
+
 //Bezeichnungen für Datenbankverbindung
 $sName = "localhost";                 //Name des Webservers
-$uName = "ufla-viewer";               //Name des Benutzers, mit dem der Zugriff auf die Datenbank erfolgen soll
-$pass = "lQAiQ0w2p(alK@2C";           //Password des Benutzers, mit dem der Zugriff auf die Datenbank erfolgen soll
+$uName = "viewer";               //Name des Benutzers, mit dem der Zugriff auf die Datenbank erfolgen soll
+$pass = "-ohne?Netz21";           //Password des Benutzers, mit dem der Zugriff auf die Datenbank erfolgen soll
 $db_name = "ufla-dashboard";          //Name der Datenbank
 
 

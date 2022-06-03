@@ -1,7 +1,7 @@
 <?php 
   session_start();
 
-  include 'db_config.php';
+  include '../db_config.php';
 
   if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])) { 
 ?>
@@ -20,11 +20,11 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Signika:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" href="stylesheet.css">
+        <link rel="stylesheet" href="../stylesheet.css">
 
     </head>
 
-    <body background="bilder/background.png">
+    <body background="../bilder/background.png">
     
     <div class="error1-reporting">
       <?php
@@ -71,23 +71,23 @@
 
 
     <!-- Überschrift & Menüpunkte -->
-    <h1 class="schrift1">UFLA-Reporting Jahresübersicht</h1>
+    <h1 class="schrift1">UFLA-Reporting Detailansicht<br>Umspannwerk x</h1>
 
     <div class="home-icon">
-      <a href="index.php">
-          <img src="bilder/home_icon.png" height="50px" width="50px" alt="Startmenü">
+      <a href="../index.php">
+          <img src="../bilder/home_icon.png" height="50px" width="50px" alt="Startmenü">
       </a>
     </div>
 
     <div class="back-icon">
         <a href="javascript:history.back()">
-            <img src="bilder/back_icon.png" height="50px" width="50px" alt="Zurück">
+            <img src="../bilder/back_icon.png" height="50px" width="50px" alt="Zurück">
         </a>
     </div>
 
     <div class="logout-icon">
-        <a href="logout.php">
-            <img src="bilder/logout_icon.png" height="50px" width="50px" alt="Ausloggen">
+        <a href="../logout.php">
+            <img src="../bilder/logout_icon.png" height="50px" width="50px" alt="Ausloggen">
         </a>
     </div>
 
@@ -116,15 +116,15 @@
     
     <script>
     
-    //Setup für ChartJS Diagramm
-    //Befüllung mit ersten Daten anhand von festgelegtem Start/Enddatum beim Neuladen der Seite
-    var frequency = <?php echo json_encode($frequency); ?>;
+        //Setup für ChartJS Diagramm
+        //Befüllung mit ersten Daten anhand von festgelegtem Start/Enddatum beim Neuladen der Seite
+        var frequency = <?php echo json_encode($frequency); ?>;
 
-    const data = {
+        const data = {
                 labels: ['> 49,0', '49,0', '48,9', '48,8', '48,7', '48,6', '48,5', '48,4', '48,3', '48,2', '48,1', '<= 48,0'],
                 datasets: [{
 
-                    data: frequency,
+                   data: frequency,
 
                     backgroundColor: [
                         'rgba(255, 26, 104, 0.2)',
@@ -177,7 +177,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: ['Jahresmittel der Abwurfleistungen in jeder', 'aktivierten Unterfrequenz-Auslösestufe'],
+                            text: ['Jahresmittel der Abwurfleistungen im', 'Umspannwerk x'],
                             font: {
                                 size: 24
                             }
@@ -216,7 +216,7 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Frequenzstufen [Hz]',
+                                text: 'Abgänge und Zugänge',
                                 font: {
                                     size: 20
                                 }
@@ -231,66 +231,66 @@
                 }
             };
     
-    const ctx = document.getElementById('chartReporting');
-    
-    //Render Block für ChartJS Diagramm
-    const chartReporting = new Chart(
-      ctx,
-      config
-    );
+        const ctx = document.getElementById('chartReporting');
+        
+        //Render Block für ChartJS Diagramm
+        const chartReporting = new Chart(
+        ctx,
+        config
+        );
 
-    //Erzeugung Dropdown Menü für Jahresauswahl
-    //Beginnend immer mit dem Jahr 2017
-    //erweitert sich selbstständig nach Jahreswechsel
+        //Erzeugung Dropdown Menü für Jahresauswahl
+        //Beginnend immer mit dem Jahr 2017
+        //erweitert sich selbstständig nach Jahreswechsel
 
-    let yearDropdown = document.getElementById('year-dropdown');
+        let yearDropdown = document.getElementById('year-dropdown');
 
-    let currentYear = new Date().getFullYear();
-    let earliestYear = 2017;
-    
-    while (currentYear >= earliestYear) {
-        let yearOption = document.createElement('option');
-        yearOption.text = currentYear;
-        yearOption.value = currentYear;
-        yearDropdown.add(yearOption);
-        currentYear -= 1;
-    }
-
-    //Funktion wird Aufgerufen, wenn in dem Dropdown-Menü eine Eingabe getätigt wird
-    //Entnimmt dem Dropdown_Menü den eingegebenen Wert (Jahr) und übergibt sie an "getDataRep.php"
-    //Führt im Anschluss automatisch die Funktionen "getData()" und "updateChart()" aus
-    function getSelectValue() {
-            var yearSelected = document.getElementById('year-dropdown').value;
-
-            $.ajax({
-                async: true,
-                url: "getDataRep.php",
-                data: {
-                yearSelected,
-                },
-                datatype: "json",
-                type: "POST",
-                success: function(data) {
-                    getData(data);
-                    updateChart();
-                }
-            });
+        let currentYear = new Date().getFullYear();
+        let earliestYear = 2017;
+        
+        while (currentYear >= earliestYear) {
+            let yearOption = document.createElement('option');
+            yearOption.text = currentYear;
+            yearOption.value = currentYear;
+            yearDropdown.add(yearOption);
+            currentYear -= 1;
         }
 
-    //Funktion nimmt die Werte entgegen, welche von "getDataRep.php" bereit gestellt werden
-    //Werte sind neue Reporting-Kennzahlen, welche aus der Datenbank entnommen würden
-    //globale Arrays zur Darstellung des Diagramms werden mit neuen Werten überschrieben
-    function getData(data) {
-        window.frequency = $.parseJSON(data);
-    }
+        //Funktion wird Aufgerufen, wenn in dem Dropdown-Menü eine Eingabe getätigt wird
+        //Entnimmt dem Dropdown_Menü den eingegebenen Wert (Jahr) und übergibt sie an "getDataRep.php"
+        //Führt im Anschluss automatisch die Funktionen "getData()" und "updateChart()" aus
+        function getSelectValue() {
+                var yearSelected = document.getElementById('year-dropdown').value;
 
-    //Funktion legt die überschriebenen Arrays zur Darstellung des Diagramms als neue Datensätze für die Darstellung des Diagramms fest
-    //Aktualisiert das Diagramm --> Diagramm wird mir neuen Werte generiert
-    function updateChart() {
-      chartReporting.data.datasets[0].data = frequency;
-      chartReporting.update();
-    }
-    
+                $.ajax({
+                    async: true,
+                    url: "../getDataRep.php",
+                    data: {
+                    yearSelected,
+                    },
+                    datatype: "json",
+                    type: "POST",
+                    success: function(data) {
+                        getData(data);
+                        updateChart();
+                    }
+                });
+            }
+
+        //Funktion nimmt die Werte entgegen, welche von "getDataRep.php" bereit gestellt werden
+        //Werte sind neue Reporting-Kennzahlen, welche aus der Datenbank entnommen würden
+        //globale Arrays zur Darstellung des Diagramms werden mit neuen Werten überschrieben
+        function getData(data) {
+            window.frequency = $.parseJSON(data);
+        }
+
+        //Funktion legt die überschriebenen Arrays zur Darstellung des Diagramms als neue Datensätze für die Darstellung des Diagramms fest
+        //Aktualisiert das Diagramm --> Diagramm wird mir neuen Werte generiert
+        function updateChart() {
+        chartReporting.data.datasets[0].data = frequency;
+        chartReporting.update();
+        }
+  
 
     </script>
   </div>

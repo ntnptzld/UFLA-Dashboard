@@ -20,7 +20,24 @@
     <link rel="icon" href="bilder/UFLA_Logo.png">
 
     <style>
-          
+        #image-map {
+            position: absolute;
+            bottom: 30px;
+            left: 220px;
+        }
+
+        #admin_page {
+            position: absolute;
+            top: 90px;
+            left: 220px;
+        }
+
+        #logout-home {
+            font-size: 20px;
+            position: absolute;
+            top: 90px;
+            left: 280px;
+        }
     </style>
 
 </head>
@@ -49,7 +66,17 @@
             <img src="bilder/monitoring.png" alt="Monitoring">
         </a>
     </div>
+    <div id="image-map">
+            <a href="map.php">
+                <img src="bilder/Netzkarte.png" width="630px" height="200px" alt="Monitoring">
+            </a>
+        </div>
 
+    <div id="admin_page">
+        <a href="admin.php">
+            <img src="bilder/admin_icon.png" height="50" width="50" alt="Log out">
+        </a>
+    </div>
     <div id="logout-home">
         <a href="logout.php">
             <img src="bilder/logout_icon.png" height="50" width="50" alt="Log out"><strong>Log out</strong>
@@ -74,7 +101,7 @@
 
 
 <?php 
-}else {
+} else {
    header("Location: login.php");
 }
  ?>
