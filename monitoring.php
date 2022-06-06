@@ -41,9 +41,9 @@
           .lineChart-monitoring {
               display: flex;
               justify-content: flex-start;
-              margin-top: 100px;
+              margin-top: 50px;
               margin-left: 100px;
-              margin-right: 100px; 
+              margin-right: 100px;
           }
 
           .chartBox-monitoring {
@@ -57,7 +57,7 @@
           }
 
           .tablePlace {
-            margin-top: 50px;
+            margin-top: 40px;
             margin-left: 10px;
             width: 40%;
           }
@@ -68,8 +68,15 @@
             width: 75%;
           }      
 
-          .inputPlace {
-            margin-top: 50px;
+          .chartMonitoringMenu {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            margin-right: 30px;
+          }
+
+          .chartMonitoringLegend img{
+            vertical-align: middle;
           }
 
           .table-fixed thead,
@@ -98,7 +105,7 @@
 
           .table-fixed tbody {
               display: block;
-              height: 800px;
+              height: 550px;
               overflow-y: auto;
           }
 
@@ -177,9 +184,15 @@
       <div class="tablePlace"></div>
       <div class="chartPlace">
         <canvas id="myChart-monitoring"></canvas><br>
-        <div class="inputPlace">
-          <input onchange="filterData()" type="date" min="2020-01-01" max="2021-01-01" id="startdate" value="2020-01-01"> 
-          <input onchange="filterData()" type="date" min="2020-01-01" max="2021-01-01" id="enddate" value="2020-02-01">  
+        <div class="chartMonitoringMenu">
+          <div class="inputPlace">
+            <input onchange="filterData()" type="date" min="2020-01-01" max="2021-01-01" id="startdate" value="2020-01-01"> 
+            <input onchange="filterData()" type="date" min="2020-01-01" max="2021-01-01" id="enddate" value="2020-02-01">  
+          </div>
+          <div class="chartMonitoringLegend">
+            <img src="bilder/mm_icon.png" height="62,5px" width="50px" alt="Rechte Maustaste">Diagramm skallieren<br> 
+            <img src="bilder/lm_icon.png" height="62,5px" width="50px" alt="Mittlere Maustaste">Diagramm verschieben
+          </div>
         </div>
       </div>    
     </div>
@@ -217,6 +230,7 @@
                 borderColor: 'rgba(54, 162, 235, 1)',
                 tension: 0.4,
                 radius: 4,
+                hoverRadius: 10
             },{
                 label: 'Stufe 1: 49,0 Hz',
                 data: step,
@@ -224,6 +238,7 @@
                 borderColor: 'rgba(255, 26, 104, 1)',
                 tension: 0.4,
                 radius: 4,
+                hoverRadius: 10
             },{
                 label: 'Summer aller 10 Stufen: 49,0 Hz bis 48,1 Hz',
                 data: stepSum,
@@ -231,6 +246,7 @@
                 borderColor: 'rgba(26, 255, 104, 1)',
                 tension: 0.4,
                 radius: 4,
+                hoverRadius: 10
             },{
                 label: 'Stufe 12: ≤ 48,0 Hz',
                 data: lastStep,
@@ -238,6 +254,7 @@
                 borderColor: 'rgba(255, 159, 64, 1)',
                 tension: 0.4,
                 radius: 4,
+                hoverRadius: 10
             }]
         };
 
@@ -254,40 +271,75 @@
         };
 
         const ctx = document.getElementById('myChart-monitoring');
+        var pointCoords =[];
 
         const lineDraw = {
           id: 'lineDraw',
           beforeDatasetsDraw(chart, args, pluginOptions) {
-            const {ctx, chartArea: {top, bottom, left, right} }= chart;
+            const {ctx, chartArea: {top, bottom, left, right} } = chart;
             
-            //lines(123, 123, 1);
+            lines(pointCoords[0], pointCoords[1], pointCoords[2]);
 
             function lines(x, y, dataSet) {
-              ctx.beginPath();
-              ctx.StrokeStyle = 'rgba(102, 102, 102, 0.8';
-              ctx.lineWidth = 1;
-              ctx.setLineDash([5, 5]);
-              ctx.moveTo(left, chart.getDatasetMeta(dataSet).data[y].y);
-              ctx.lineTo(chart.getDatasetMeta(dataSet).data[x].x, chart.getDatasetMeta(dataSet).data[y].y);
-              ctx.lineTo(chart.getDatasetMeta(dataSet).data[x].x, bottom);
-              ctx.stroke();
-              ctx.closePath();
-              ctx.restore();
 
+              if (pointCoords[0] != null) {
+                ctx.beginPath();
+                ctx.StrokeStyle = 'rgba(102, 102, 102, 0.8';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                ctx.moveTo(left, chart.getDatasetMeta(dataSet).data[y].y);
+                ctx.lineTo(chart.getDatasetMeta(dataSet).data[x].x, chart.getDatasetMeta(dataSet).data[y].y);
+                ctx.lineTo(chart.getDatasetMeta(dataSet).data[x].x, bottom);
+                ctx.stroke();
+                ctx.closePath();
+                ctx.restore();
+              }
             };
 
             ctx.setLineDash([]);
           }
         };
 
-       
-        console.log(lineDraw);
+        const totalDuration = 10000;
+        const delayBetweenPoints = totalDuration / dates.length;
+        const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
+        
+        const animation = {
+          x: {
+            type: 'number',
+            easing: 'linear',
+            duration: delayBetweenPoints,
+            from: NaN, // the point is initially skipped
+            delay(ctx) {
+              if (ctx.type !== 'data' || ctx.xStarted) {
+                return 0;
+              }
+              ctx.xStarted = true;
+              return ctx.index * delayBetweenPoints;
+            }
+          },
+          y: {
+            type: 'number',
+            easing: 'linear',
+            duration: delayBetweenPoints,
+            from: previousY,
+            delay(ctx) {
+              if (ctx.type !== 'data' || ctx.yStarted) {
+                return 0;
+              }
+              ctx.yStarted = true;
+              return ctx.index * delayBetweenPoints;
+            }
+          }
+        };
 
         //Konfigurationen für ChartJS-Diagramm
         const config = {
             type: 'line',
             data,
             options: {
+              animation,
+              responsive: true,
               scales: {
                 y: {
                   beginAtZero: true,
@@ -319,6 +371,10 @@
                   }
                 }
               },
+              interaction: {
+                intersect: false,
+                mode: 'point',
+              },
               plugins: {
                 title: {
                   display: true,
@@ -338,7 +394,7 @@
                   zoom: {
                     wheel: {
                       enabled: true,
-                      speed: 0.05,
+                      speed: 0.1,
                     },
                     mode: 'x'
                   }                    
@@ -507,14 +563,13 @@
           
           const trbody = document.querySelectorAll('tbody tr');
          
-          trbody.forEach((tr) => {
-            tr.style.backgroundColor = 'transparent';
-          });
-
           if (points[0]) {
             const dataSet = points[0].datasetIndex;         
 
             if (dataSet == 0) {
+              trbody.forEach((tr) => {
+                tr.style.backgroundColor = 'transparent';
+              });
               const index = points[0].index;
               const rowID = "tableRow" + (index + 1);
               const color = chartMonitoring.data.datasets[0].backgroundColor;
@@ -526,6 +581,9 @@
             };
 
             if (dataSet == 1) {
+              trbody.forEach((tr) => {
+                tr.style.backgroundColor = 'transparent';
+              });
               const index = points[0].index;
               const rowID = "tableRow" + (index + 1);
               const color = chartMonitoring.data.datasets[1].backgroundColor;
@@ -537,6 +595,9 @@
             };
 
             if (dataSet == 2) {
+              trbody.forEach((tr) => {
+                tr.style.backgroundColor = 'transparent';
+              });
               const index = points[0].index;
               const rowID = "tableRow" + (index + 1);
               const color = chartMonitoring.data.datasets[2].backgroundColor;
@@ -548,6 +609,9 @@
             };
 
             if (dataSet == 3) {
+              trbody.forEach((tr) => {
+                tr.style.backgroundColor = 'transparent';
+              });
               const index = points[0].index;
               const rowID = "tableRow" + (index + 1);
               const color = chartMonitoring.data.datasets[3].backgroundColor;
@@ -561,13 +625,13 @@
           };
         };
 
-       // chartMonitoring.canvas.onmousemove = mousemoveHandler;
+        chartMonitoring.canvas.onmousemove = mousemoveHandler;
        */
       
         function clickHandler(click) {
-            const points = chartMonitoring.getElementsAtEventForMode(click, 'nearest' , {intersect: true}, true);
-            
-            const trbody = document.querySelectorAll('tbody tr');
+          const points = chartMonitoring.getElementsAtEventForMode(click, 'nearest' , {intersect: true}, true);
+
+          const trbody = document.querySelectorAll('tbody tr');
          
           trbody.forEach((tr) => {
             tr.style.backgroundColor = 'transparent';
@@ -585,6 +649,9 @@
               element.scrollIntoView(true);
 
               trbody[index].style.backgroundColor = color;
+
+              window.pointCoords = [index, index, 0];
+              chartMonitoring.update();
             };
 
             if (dataSet == 1) {
@@ -596,17 +663,23 @@
               element.scrollIntoView(true);
 
               trbody[index].style.backgroundColor = color;
+
+              window.pointCoords = [index, index, 1];
+              chartMonitoring.update();
             };
 
             if (dataSet == 2) {
               const index = points[0].index;
               const rowID = "tableRow" + (index + 1);
               const color = chartMonitoring.data.datasets[2].backgroundColor;
-
+              
               const element = document.getElementById(rowID);
               element.scrollIntoView(true);
 
               trbody[index].style.backgroundColor = color;
+              
+              window.pointCoords = [index, index, 2];
+              chartMonitoring.update();
             };
 
             if (dataSet == 3) {
@@ -618,8 +691,14 @@
               element.scrollIntoView(true);
 
               trbody[index].style.backgroundColor = color;
+
+              window.pointCoords = [index, index, 3];
+              chartMonitoring.update();
             };
           
+          } else {
+              window.pointCoords = [];
+              chartMonitoring.update();
           };
         };  
 
