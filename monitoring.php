@@ -40,7 +40,7 @@
 
           .lineChart-monitoring {
               display: flex;
-              justify-content: flex-start;
+              justify-content: center;
               margin-top: 50px;
               margin-left: 100px;
               margin-right: 100px;
@@ -49,7 +49,7 @@
           .chartBox-monitoring {
               display: flex;
               justify-content: space-between;
-              width: 100%;
+              width: 100vw;
               padding: 10px;
               border-radius: 20px;
               border: solid 3px white;
@@ -59,13 +59,13 @@
           .tablePlace {
             margin-top: 40px;
             margin-left: 10px;
-            width: 40%;
+            width: 20vw;
           }
 
           .chartPlace {            
             margin-top: 25px;
             margin-left: 50px;
-            width: 75%;
+            width: 60vw;
           }      
 
           .chartMonitoringMenu {
@@ -198,16 +198,10 @@
     </div>
 
     <!-- Laden für die Erstellung des Diagramms und Übertragung der eingegeben Werte relevanter Skripte -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" 
-    integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" 
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.1/chartjs-plugin-zoom.min.js" 
-    integrity="sha512-klQv6lz2YR+MecyFYMFRuU2eAl8IPRo6zHnsc9n142TJuJHS8CG0ix4Oq9na9ceeg1u5EkBfZsFcV3U7J51iew==" 
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="javascript/chart.js"></script>
+    <script type="text/javascript" src="javascript/ajax.js"></script>
+    <script type="text/javascript" src="javascript/pan.js"></script>
+    <script type="text/javascript" src="javascript/zoom.js"></script>
 
     
     <script>
@@ -300,7 +294,7 @@
           }
         };
 
-        const totalDuration = 10000;
+        const totalDuration = 5000;
         const delayBetweenPoints = totalDuration / dates.length;
         const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
         
@@ -394,7 +388,7 @@
                   zoom: {
                     wheel: {
                       enabled: true,
-                      speed: 0.1,
+                      speed: 0.07,
                     },
                     mode: 'x'
                   }                    

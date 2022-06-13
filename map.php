@@ -13,7 +13,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitoring</title>
+    <title>Netzkarte</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,30 @@
     <link rel="icon" href="bilder/UFLA_Logo.png">
 
     <style>
-        
+        /*canvas {
+          background-image: url(bilder/Karte.png);
+          background-size: 100% 100%;
+          border-radius: 20px;
+        }*/
+
+        .chartBox-map {
+          width: 70%;
+          padding: 20px;
+          margin-top: 40px;
+          border-radius: 20px;
+          border: solid 3px white;
+          background: white;
+        }
+
+        .bubbleChart-map {
+            display: flex;
+            justify-content: center;
+            margin-top: -20px;
+        }
+
+        #mapImage {
+          border-radius: 20px;
+        }
     </style>
 
   </head>
@@ -85,75 +108,189 @@
         </div>
 
 
-<div class="lineChart-monitoring">
+    <div class="bubbleChart-map">
 
-    <!-- Erstellung des ChartJS Diagramms und der beiden Kalender für Start/Enddatum -->
-    <!-- Auswahl im Kalender wird mit "max" und "min" zur Zeit auf einzigen in der Datenbank verfügbaren Werte beschränkt-->
-    <!-- Muss zur Zeit noch manuell geändert werden; Automatisierung ist geplant -->
-    <div class="chartBox-monitoring">
-            <canvas id="myChart-map"></canvas><br>
-    </div>
+      <!-- Erstellung des ChartJS Diagramms und der beiden Kalender für Start/Enddatum -->
+      <!-- Auswahl im Kalender wird mit "max" und "min" zur Zeit auf einzigen in der Datenbank verfügbaren Werte beschränkt-->
+      <!-- Muss zur Zeit noch manuell geändert werden; Automatisierung ist geplant -->
+      <div class="chartBox-map">
+              <canvas id="myChart-map"></canvas><br>
+      </div>
 
-    <!-- Laden für die Erstellung des Diagramms und Übertragung der eingegeben Werte relevanter Skripte -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+      <!-- Laden für die Erstellung des Diagramms und Übertragung der eingegeben Werte relevanter Skripte -->
+      <script type="text/javascript" src="javascript/chart.js"></script>
+      <script type="text/javascript" src="javascipt/ajax.js"></script>
+      <script type="text/javascript" src="javascript/pan.js"></script>
+      <script type="text/javascript" src="javascript/zoom.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" 
-    integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" 
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      
+      <script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.1/chartjs-plugin-zoom.min.js" 
-    integrity="sha512-klQv6lz2YR+MecyFYMFRuU2eAl8IPRo6zHnsc9n142TJuJHS8CG0ix4Oq9na9ceeg1u5EkBfZsFcV3U7J51iew==" 
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    
-    <script>
-        const labels = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-        ];
+        var linkURL = <?php echo json_encode($linkRepUW_Detail); ?>;
+        var dataLabels = ['> 49,0 Hz', '49,0 Hz', '48,9 Hz', '48,8 Hz', '48,7 Hz', '48,6 Hz', '48,5 Hz', '48,4 Hz', '48,3 Hz', '48,2 Hz', '48,1 Hz', '≤ 48,0 Hz'];
+        
         const data = {
-            datasets: [{
-                label: 'Stufe 1',
-                data: [{
-                x: 20,
-                y: 30,
-                r: 13
-                }, {
-                x: 40,
-                y: 10,
-                r: 28
-                }],
-                backgroundColor: 'rgb(255, 99, 132)'
-            },{
-                label: 'Stufe 2',
-                data: [{
-                x: 15,
-                y: 34,
-                r: 15
-                }, {
-                x: 30,
-                y: 19,
-                r: 14
-                }],
-                backgroundColor: 'rgb(132, 99, 255)'
-            },{
-                label: 'Stufe 3',
-                data: [{
-                x: 25,
-                y: 37,
-                r: 9
-                }, {
-                x: 24,
-                y: 13,
-                r: 4
-                }],
-                backgroundColor: 'rgb(99, 255, 132)'
-            }]
+          datasets: [{
+            label:dataLabels[0],
+            data: [{
+            }],
+            backgroundColor: 'rgb(99, 255, 132)'
+          },{
+            label: dataLabels[1],
+            data: [{
+              x: 20,
+              y: 30,
+              r: 13
+            }, {
+              x: 40,
+              y: 10,
+              r: 28
+            }],
+            backgroundColor: 'rgba(255, 26, 104, 0.6)',
+            borderColor: 'rgba(255, 26, 104, 1)'
+          },{
+            label: dataLabels[2],
+            data: [{
+              x: 15, 
+              y: 34, 
+              r: 15
+            }, {
+              x: 30,
+              y: 19,
+              r: 14
+            }],
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderCOlor: 'rgba(54, 162, 235, 1)'
+          },{
+            label: dataLabels[3],
+            data: [{
+              x: 25,
+              y: 37,
+              r: 9
+            }, {
+              x: 24,
+              y: 13,
+              r: 4
+            }],
+            backgroundColor: 'rgba(255, 206, 86, 0.6)',
+            borderColor: 'rgba(255, 206, 86, 1)'
+          },{
+            label: dataLabels[4],
+            data: [{
+              x: 22,
+              y: 31,
+              r: 5
+            }, {
+              x: 32,
+              y: 12,
+              r: 19
+            }],
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)'
+          },{
+            label: dataLabels[5],
+            data: [{
+              x: 38,
+              y: 14,
+              r: 5
+            }, {
+              x: 21,
+              y: 38,
+              r: 7
+            }],
+            backgroundColor: 'rgba(153, 102, 255, 0.6)',
+            borderColor: 'rgba(153, 102, 255, 1)'
+          },{
+            label: dataLabels[6],
+            data: [{
+              x: 13,
+              y: 26,
+              r: 14
+            }, {
+              x: 28,
+              y: 8,
+              r: 9
+            }],
+            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+            borderColor: 'rgba(255, 159, 64, 1)'
+          },{
+            label: dataLabels[7],
+            data: [{
+              x: 20,
+              y: 10,
+              r: 13
+            }, {
+              x: 40,
+              y: 16,
+              r: 28
+            }],
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            borderColor: 'rgba(0, 0, 0, 1)'
+          },{
+            label: dataLabels[8],
+            data: [{
+              x: 23,
+              y: 25,
+              r: 17
+            }, {
+              x: 33,
+              y: 12,
+              r: 12
+            }],
+            backgroundColor: 'rgba(100, 0, 30, 0.6)',
+            borderColor: 'rgba(100, 0, 30, 1)'
+          },{
+            label:dataLabels[9],
+            data: [{
+              x: 4,
+              y: 25,
+              r: 5
+            }, {
+              x: 23,
+              y: 17,
+              r: 17
+            }],
+            backgroundColor: 'rgba(100, 255, 30, 0.6)',
+            borderColor: 'rgba(100, 255, 30, 1)'
+          },{
+            label:dataLabels[10],
+            data: [{
+              x: 15,
+              y: 7,
+              r: 6
+            }, {
+              x: 29,
+              y: 12,
+              r: 18
+            }],
+            backgroundColor: 'rgba(33, 136, 143, 0.6)',
+            borderColor: 'rgba(33, 136, 143, 1)'
+          },{
+            label:dataLabels[11],
+            data: [{
+            }],
+            backgroundColor: 'rgb(99, 255, 132)'
+          }]
+        };
+
+        const image = new Image();
+        image.src = 'bilder/Karte.png';
+        const ctx = document.getElementById('myChart-map');
+        var canvasWidth = ctx.getBoundingClientRect().width;
+        var canvasHeight = ctx.getBoundingClientRect().height;
+
+        console.log(canvasWidth + ", " + canvasHeight);
+        // image größe: 5102 x 2551
+
+        const drawImage = {
+          id: 'customBackgroundImg',
+          beforeDraw (chart, args, options) {
+            const {ctx, chartArea: {top, bottom, left, right, width, height}, scales: {x, y}} = chart;
+            ctx.save();
+
+            ctx.drawImage (image, 29, 69, 1186, 568);
+            ctx.restore();
+          }
         };
 
         const config = {
@@ -163,10 +300,14 @@
               plugins: {
                   title: {
                     display: true,
-                    text: ['Zeitreihen der aktivierten Abwurfleistungen pro Unterfrequenz-Auslösestufe', 'in viertelstündlicher zeitlicher Auflösung'],
+                    text: ['Übersichtskarte über die Verteilung von Umspannwerken auf die Frequenzstufen'],
                     font: {
                       size: 24
-                    }
+                    }, 
+                    padding: {
+                      top: 10,
+                      bottom: 30
+                  }
                   },
                   zoom: {
                   pan: {
@@ -174,15 +315,19 @@
                     mode: 'xy'
                   },
                   limits: {
-                    x: {minRange: 20}
+                    xy: {minRange: 40}
                   },
                   zoom: {
                     wheel: {
                       enabled: true,
-                      speed: 0.02,
+                      speed: 0.05,
                     },
                     mode: 'xy'
                   }                    
+                },
+                legend: {
+                  position: 'right',
+                  align: 'left'
                 }
               },
               scales: {
@@ -194,6 +339,8 @@
                   ticks: {
                     display: false
                   },
+                  min: 0,
+                  max: 40,
                   grid: {
                       display: false,
                       drawOnChartArea: false,
@@ -206,8 +353,10 @@
                     display: false
                     },            
                   ticks: {
-                    display: false
+                    display: false                    
                   },
+                  min: 0,
+                  max: 45,
                   grid: {
                       display: false,
                       drawOnChartArea: false,
@@ -215,17 +364,30 @@
                   }
                 }
               }
-            }
+            }, 
+            plugins: [drawImage]
         };
 
-        const myChart_Map = new Chart(
+        const chartMap = new Chart(
             document.getElementById('myChart-map'),
             config
         );
-</script>
-</div>
 
-</body>
+        function clickHandler(click) {
+            const points = chartMap.getElementsAtEventForMode(click, 'nearest' , {intersect: true}, true);
+            if(points.length){
+                const firstPoint = points [0];
+                const value = chartMap.data.datasets [firstPoint.datasetIndex].data[firstPoint.index];
+                location.href = "reporting/Umspannwerke-Detail.php";
+            }
+        };  
+
+        chartMap.canvas.onclick = clickHandler;
+
+      </script>
+    </div>
+
+  </body>
 
 </html>
 

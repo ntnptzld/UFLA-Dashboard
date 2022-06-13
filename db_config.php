@@ -13,17 +13,16 @@ $linkRepUW_Detail = "Umspannwerke-Detail.php";
 
 //Bezeichnungen für Datenbankverbindung
 $sName = "localhost";                 //Name des Webservers
-$uName = "viewer";               //Name des Benutzers, mit dem der Zugriff auf die Datenbank erfolgen soll
-$pass = "-ohne?Netz21";           //Password des Benutzers, mit dem der Zugriff auf die Datenbank erfolgen soll
+$uName = "ufla";               //Name des Benutzers, mit dem der Zugriff auf die Datenbank erfolgen soll
+$pass = "h237gg-543.45g#wdq3";           //Password des Benutzers, mit dem der Zugriff auf die Datenbank erfolgen soll
 $db_name = "ufla-dashboard";          //Name der Datenbank
-
 
 //Datenbank-Verbindung herstellen
 try {
     $conn = new PDO("mysql:host=$sName;dbname=$db_name", 
                     $uName, $pass);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}catch(PDOException $e){
+} catch(PDOException $e){
   echo "Verbindung fehlgeschlagen: ". $e->getMessage();
 }
 

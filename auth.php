@@ -11,9 +11,9 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 	//Überprüfung, ob leere Daten übergeben wurden
 	if (empty($email)) {
 		header("Location: login.php?error=Email benötigt");
-	}else if (empty($password)){
+	} else if (empty($password)){
 		header("Location: login.php?error=Password benötigt&email=$email");
-	}else {
+	} else {
 		$stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
 		$stmt->execute([$email]);
 
@@ -24,22 +24,23 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 			$user_email = $user['email'];
 			$user_password = $user['password'];
 			$user_full_name = $user['full_name'];
+			$user_groupe = $user['usergroupe'];
+
+			
 
 			//Überprüfung auf Korrektheit der eingegeben Werte mit Werten aus der Datenbank
-			if ($email === $user_email) {
-				if (md5($password, $user_password)) {
-					$_SESSION['user_id'] = $user_id;
-					$_SESSION['user_email'] = $user_email;
-					$_SESSION['user_full_name'] = $user_full_name;
-					header("Location: index.php");
+			if ($email == $user_email && md5($password) == $user_password) {
 
-				}else {
-					header("Location: login.php?error=Falsche Anmeldedaten&email=$email");
-				}
-			}else {
+				$_SESSION['user_id'] = $user_id;
+				$_SESSION['user_email'] = $user_email;
+				$_SESSION['user_full_name'] = $user_full_name;
+				$_SESSION['user_groupe'] = $user_groupe;
+				
+				header("Location: index.php");
+			} else {
 				header("Location: login.php?error=Falsche Anmeldedaten&email=$email");
 			}
-		}else {
+		} else {
 			header("Location: login.php?error=Falsche Anmeldedaten&email=$email");
 		}
 	}

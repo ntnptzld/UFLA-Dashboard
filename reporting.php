@@ -111,8 +111,8 @@
 
 
     <!-- Laden für die Erstellung des Diagramms und Übertragung der eingegeben Werte relevanter Skripte -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script type="text/javascript" src="javascript/chart.js"></script>
+    <script type="text/javascript" src="javascript/ajax.js"></script>
     
     <script>
     
@@ -120,7 +120,7 @@
         //Befüllung mit ersten Daten anhand von festgelegtem Start/Enddatum beim Neuladen der Seite
         var frequency = <?php echo json_encode($frequency); ?>;
         var linkURL = <?php echo json_encode($linkRepUW_Üb); ?>;
-        var dataLabels = ['> 49,0', '49,0', '48,9', '48,8', '48,7', '48,6', '48,5', '48,4', '48,3', '48,2', '48,1', '<= 48,0'];
+        var dataLabels = ['> 49,0', '49,0', '48,9', '48,8', '48,7', '48,6', '48,5', '48,4', '48,3', '48,2', '48,1', '≤ 48,0'];
         
         const data = {
                 labels: dataLabels,
@@ -165,6 +165,7 @@
                         'rgba(100, 255, 30, 1)',
                         'rgba(33, 136, 143, 1)'
                     ],
+                    hoverOffset: 4,
                     borderWidth: 1
                 }],
             };
@@ -225,7 +226,7 @@
                         delay: (context) => {
                             let delay = 0;
                             if (context.type === 'data' && context.mode === 'default' && !delayed) {
-                            delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                            delay = context.dataIndex * 200 + context.datasetIndex * 50;
                             }
                             return delay;
                         },
@@ -284,8 +285,9 @@
             yearOption.value = currentYear;
             yearDropdown.add(yearOption);
             currentYear -= 1;
-        }
-
+        };
+        
+        yearDropdown.value = (new Date().getFullYear() - 1);
         //Funktion wird Aufgerufen, wenn in dem Dropdown-Menü eine Eingabe getätigt wird
         //Entnimmt dem Dropdown_Menü den eingegebenen Wert (Jahr) und übergibt sie an "getDataRep.php"
         //Führt im Anschluss automatisch die Funktionen "getData()" und "updateChart()" aus
