@@ -54,6 +54,7 @@
               border-radius: 20px;
               border: solid 3px white;
               background: white;
+              margin-top: 0px;
           }
 
           .tablePlace {
@@ -207,7 +208,7 @@
     <script>
         //Setup für ChartJS Diagramm
         //Befüllung mit ersten Daten anhand von festgelegtem Start/Enddatum beim Neuladen der Seite
-        var labels = ["Datum [yyyy:mm:dd] Uhrzeit [hh:mm]", "Stufe 0: > 49,0 Hz", "Stufe 1: 49,0 Hz" , "Summer aller 10 Stufen: 49,0 Hz bis 48,1 Hz", "Stufe 12: ≤ 48,0 Hz"];
+        var labels = ["Datum [yyyy:mm:dd] Uhrzeit [hh:mm:ss]", "Stufe 0: > 49,0 Hz", "Stufe 1: 49,0 Hz" , "Summer aller 10 Stufen: 49,0 Hz bis 48,1 Hz", "Stufe 12: ≤ 48,0 Hz"];
        
         var dates = <?php echo json_encode($dates); ?>;
         var firstStep = <?php echo json_encode($firstStep); ?>;
@@ -218,7 +219,7 @@
         const data = {
             labels: dates,
             datasets: [{
-                label: 'Stufe 0: > 49,0 Hz',
+                label: labels[1],
                 data: firstStep,
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
@@ -226,7 +227,7 @@
                 radius: 4,
                 hoverRadius: 10
             },{
-                label: 'Stufe 1: 49,0 Hz',
+                label: labels[2],
                 data: step,
                 backgroundColor: 'rgba(255, 26, 104, 0.2)',
                 borderColor: 'rgba(255, 26, 104, 1)',
@@ -234,7 +235,7 @@
                 radius: 4,
                 hoverRadius: 10
             },{
-                label: 'Summer aller 10 Stufen: 49,0 Hz bis 48,1 Hz',
+                label: labels[3],
                 data: stepSum,
                 backgroundColor: 'rgba(26, 255, 104, 0.2)',
                 borderColor: 'rgba(26, 255, 104, 1)',
@@ -242,7 +243,7 @@
                 radius: 4,
                 hoverRadius: 10
             },{
-                label: 'Stufe 12: ≤ 48,0 Hz',
+                label: labels[4],
                 data: lastStep,
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgba(255, 159, 64, 1)',
@@ -353,7 +354,7 @@
                 x: {
                   title: {
                     display: true,
-                    text: 'Datum [dd:mm:yyyy] Uhrzeit [hh:mm]',
+                    text: labels[0],
                     font: {
                       size: 20
                     }
@@ -549,78 +550,6 @@
    
           document.getElementById("tableDiv").remove();
         };
-
-        /*
-        function mousemoveHandler(mousemove) {
-          
-          const points =  chartMonitoring.getElementsAtEventForMode(mousemove, 'nearest', {intersect: true}, true);
-          
-          const trbody = document.querySelectorAll('tbody tr');
-         
-          if (points[0]) {
-            const dataSet = points[0].datasetIndex;         
-
-            if (dataSet == 0) {
-              trbody.forEach((tr) => {
-                tr.style.backgroundColor = 'transparent';
-              });
-              const index = points[0].index;
-              const rowID = "tableRow" + (index + 1);
-              const color = chartMonitoring.data.datasets[0].backgroundColor;
-
-              const element = document.getElementById(rowID);
-              element.scrollIntoView(true);
-
-              trbody[index].style.backgroundColor = color;
-            };
-
-            if (dataSet == 1) {
-              trbody.forEach((tr) => {
-                tr.style.backgroundColor = 'transparent';
-              });
-              const index = points[0].index;
-              const rowID = "tableRow" + (index + 1);
-              const color = chartMonitoring.data.datasets[1].backgroundColor;
-            
-              const element = document.getElementById(rowID);
-              element.scrollIntoView(true);
-
-              trbody[index].style.backgroundColor = color;
-            };
-
-            if (dataSet == 2) {
-              trbody.forEach((tr) => {
-                tr.style.backgroundColor = 'transparent';
-              });
-              const index = points[0].index;
-              const rowID = "tableRow" + (index + 1);
-              const color = chartMonitoring.data.datasets[2].backgroundColor;
-
-              const element = document.getElementById(rowID);
-              element.scrollIntoView(true);
-
-              trbody[index].style.backgroundColor = color;
-            };
-
-            if (dataSet == 3) {
-              trbody.forEach((tr) => {
-                tr.style.backgroundColor = 'transparent';
-              });
-              const index = points[0].index;
-              const rowID = "tableRow" + (index + 1);
-              const color = chartMonitoring.data.datasets[3].backgroundColor;
-
-              const element = document.getElementById(rowID);
-              element.scrollIntoView(true);
-
-              trbody[index].style.backgroundColor = color;
-            };
-          
-          };
-        };
-
-        chartMonitoring.canvas.onmousemove = mousemoveHandler;
-       */
       
         function clickHandler(click) {
           const points = chartMonitoring.getElementsAtEventForMode(click, 'nearest' , {intersect: true}, true);

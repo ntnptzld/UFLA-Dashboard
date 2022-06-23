@@ -28,32 +28,18 @@
                 display: flex;
                 justify-content: space-around;
                 margin-top: 100px;
-                margin-left: 100px;
-                margin-right: 100px;
+                margin-left: 400px;
+                margin-right: 400px;
                 margin-bottom: 50px;
                 padding: 20px; 
                 background: white;
                 border-radius: 20px;
             }
 
-            .admin-log {
-                padding-left: 3%;
-                padding-bottom: 3%;
-                text-align: left;
-                width: 50%;
-                height: 80%;
-                display: block;
-                overflow: auto;
-            }
-
-            .admin-userTable {
-                padding-left: 5%;
-                padding-bottom: 3%;
-                text-align: left;
-                width: 70%;
-                height: 80%;
-                display: block;
-                overflow: auto;
+            .admin-menu {
+                margin-top: 30px;
+                margin-bottom: 30px;
+                align-items: center;
             }
 
             .schrift2 {
@@ -61,23 +47,11 @@
                 font-size: 30px;
                 color: black;
             }
-                        
-            .tableIdCell {
-                width: 5%;
-            }
-            .tableNameCell {
-                width: 20%;
-            }
-            .tableEmailCell {
-                width: 40%;
-            }
-            .tableUserCell: {
-                width: 15%;
-            }
-        
-            .tableIconCell {
-                width: 10%;
+
+            .schrift3 {
                 text-align: center;
+                font-size: 20px;
+                color: black;
             }
         </style>
 
@@ -108,9 +82,18 @@
         </div>
 
         <div class="admin-box">
-            <a href="admin/nutzer-verwaltung.php">
-                <img src="bilder/map.png">
-            </a>
+            <div class="admin-menu">
+                <h2 class="schrift2"></h2><br><br>
+                <a href="admin/user-control.php">
+                    <span class="schrift3">· Nutzerverwaltung <i class="fa-solid fa-users"></i></span><br><br>
+                </a>
+                <a>
+                    <span class="schrift3">· Loginüberwachung <i class="fa-solid fa-arrow-right-to-bracket"></i></span>
+                </a>
+            </div>
+            <div>
+                <img src="bilder/office.png" width="600px">
+            </div>
         </div>
         
         <script type="text/javascript" src="javascript/font.js"></script>

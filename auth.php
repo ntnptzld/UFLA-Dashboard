@@ -14,7 +14,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 	} else if (empty($password)){
 		header("Location: login.php?error=Password benötigt&email=$email");
 	} else {
-		$stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
+		$stmt = $conn->prepare("SELECT * FROM $tableUsers WHERE email=?");
 		$stmt->execute([$email]);
 
 		if ($stmt->rowCount() === 1) {

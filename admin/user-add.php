@@ -79,7 +79,7 @@
         </div>
 
         <div class="back-icon">
-            <a href="nutzer-verwaltung.php">
+            <a href="user-control.php">
                 <img src="../bilder/back_icon.png" height="50px" width="50px" alt="Zurück">
             </a>
         </div>
@@ -94,29 +94,15 @@
         <div class="admin-log">
             <h2 class="schrift2">Log-Fenster</h2><br>
                 <?php
-                    if(isset($_GET["id"])) {
-                        if(!empty($_GET["id"])) {
-                        } else {
-                            ?>
-                                <p>Es wurde kein Nutzer ausgewählt.</p>
-                            <?php
-                        }
-                    } 
-                    else {
-                        ?>
-                            <p>Es wurde kein Nutzer ausgewählt.</p>
-                        <?php
-                    }
                     if(isset($_POST["newUserData"])) {
-                        
-                        if ($_POST["newPassword"] != $_POST["newPassword1"]) {
+                        if ($_POST["newPassword"] != $_POST["newPasswordWdh"]) {
                             ?>
                                 <p>Die Passwörter sind nicht gleich.</p>
                             <?php
                         } else {
-                            ?> 
-                                <p>Neue Benutzerdaten wurden gespeichert.</p>
-                            <?php
+                        ?> 
+                            <p>Neuer Benutzer wurden gespeichert.</p>
+                        <?php
                         }
                     }
                 ?>
@@ -124,29 +110,23 @@
             <div class="admin-userEdit">
             <h2 class="schrift2">Benutzerdaten ändern</h2><br>
                 <?php
-                    if(isset($_GET["id"])) {
-                        if(!empty($_GET["id"])) {
-                            if(isset($_POST["newUserData"])) {
-                                if ($_POST["newPassword"] == $_POST["newPassword1"]) {
-                                    $sql = $conn->prepare("UPDATE $tableUsers SET full_name = :user, email = :email, password = :password WHERE id = :id");
-                                    $sql->execute(array(":user" => $_POST["newUsername"], ":email" => $_POST["newEmail"], ":password" => md5($_POST["newPassword"]), ":id" => $_GET["id"]));
-                                }
-                            }
-                            $sql = $conn->prepare("SELECT * FROM $tableUsers WHERE id = :id");
-                            $sql->execute(array(":id" => $_GET["id"]));
-                            $row = $sql->fetch();
-                            ?>
-                                <form action="nutzer-bearbeiten.php?id=<?php echo $_GET["id"]?>" method="post">
-                                    <input type="text" name="newUsername" value="<?php echo $row["full_name"] ?>" placeholder="Benutzername" require><br><br>
-                                    <input type="email" name="newEmail" value="<?php echo $row["email"] ?>" placeholder="Email" require><br><br>
-                                    <input type="password" name="newPassword" value="<?php echo md5($row["password"]) ?>" placeholder="Passwort" require><br><br>
-                                    <input type="password" name="newPassword1" value="<?php echo md5($row["password"]) ?>" placeholder="Passwort wiederholen" require><br><br>
-                                    <button name="newUserData" type="submit">Speichern</button>
-                                </form>
-                            <?php
+                    if(isset($_POST["newUserData"])) {
+                        
+                        if ($_POST["newPassword"] == $_POST["newPasswordWdh"]) {
+                            $sql = $conn->prepare("INSERT INTO $tableUsers (full_name, email, password, usergroupe) VALUES (?, ?, ?, ?)");
+                            $sql->execute(array($_POST["newUsername"], $_POST["newEmail"], md5($_POST["newPassword"]), $_POST["newUserGroupe"]));
                         }
                     }
                 ?>
+
+                <form action="user-add.php" method="post">
+                    <input type="text" name="newUsername" value="<?php if (!empty($_POST["newUsername"])) echo $_POST["newUsername"] ?>" placeholder="Benutzername" require><br><br>
+                    <input type="email" name="newEmail" value="<?php  if (!empty($_POST["newEmail"])) echo $_POST["newEmail"] ?>" placeholder="Email" require><br><br>
+                    <input type="password" name="newPassword" value="<?php if (!empty($_POST["newPassword"])) if ($_POST["newPassword"] == $_POST["newPasswordWdh"]) echo $_POST["newPassword"] ?>" placeholder="Passwort" require><br><br>
+                    <input type="password" name="newPasswordWdh" value="<?php if (!empty($_POST["newPasswordWdh"])) if ($_POST["newPassword"] == $_POST["newPasswordWdh"]) echo $_POST["newPasswordWdh"] ?>" placeholder="Passwort wiederholen" require><br><br>
+                    <input type="text" name="newUserGroupe" value="<?php if (!empty($_POST["newUserGroupe"])) echo $_POST["newUserGroupe"] ?>" placeholder="Nutzergruppe" require><br><br>
+                    <button name="newUserData" type="submit">Speichern</button>
+                </form>
             </div>
             
         </div>

@@ -75,9 +75,75 @@
                 width: 15%;
             }
         
-            .tableIconCell {
+            .tableIconCellEdit {
                 width: 10%;
                 text-align: center;
+            }
+
+            .tableIconCellDel {
+                width: 10%;
+                text-align: center;
+            }
+
+            .tableIconCellAdd {
+                width: 10%;
+                text-align: center;
+            }
+            
+            .popupUPC .popupUPC-overlay {
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.7);
+                z-index: 1;
+                display: none;
+            }
+            
+            .popupUPC .popupUPC-content {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                width: 450px;
+                height: 220px;
+                z-index: 2;
+                text-align: center;
+                padding: 20px;
+                box-sizing: border-box;
+                background: #fff;
+                border-radius: 20px;
+            }
+
+            .popupUPC .popupUPC-closeBtn {
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                width: 30px;
+                height: 30px;
+                background: #222;
+                color: #fff;
+                font-size: 25px;
+                font-weight: 600;
+                line-height: 30px;
+                text-align: center;
+                border-radius: 50%;
+                cursor: pointer;
+            }
+
+            .popupUPC.active .popupUPC-overlay {
+                display: block;
+            }
+
+            .popupUPC.active .popupUPC-content {
+                transition: all 300ms ease-in-out;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            .confirmBtns {
+                display: flex;
+                justify-content: space-around;
             }
         </style>
 
@@ -114,7 +180,7 @@
                     if(isset($_GET["del"])) {
                         if(!empty($_GET["del"])) {
                             $sql = $conn->prepare("DELETE FROM $tableUsers WHERE id = :id");
-                            $sql->execute(array(":id" => $_GET["del"]));
+                            $sql->execute(array(":id" => $_GET["delConf"]));
                             ?>
                                 <p>Der Benutzer wurde gelöscht.</p>
                             <?php
@@ -148,8 +214,8 @@
                                                 <td class="tableNameCell"><?php echo $row["full_name"] ?></td>
                                                 <td class="tableEmailCell"><?php echo $row["email"] ?></td>
                                                 <td class="tableUserCell"><?php echo $row["usergroupe"] ?></td>
-                                                <td class="tableIconCell"><a href="nutzer-bearbeiten.php?id=<?php echo $row["id"] ?>"><i class="fa-solid fa-user-pen"></i></a></td>
-                                                <td class="tableIconCell"><a href="nutzer-verwaltung.php?del=<?php echo $row["id"] ?>"><i class="fa-solid fa-user-minus"></i></a></td>
+                                                <td class="tableIconCellEdit"><a href="user-edit.php?id=<?php echo $row["id"] ?>"><i class="fa-solid fa-user-pen" style="cursor: pointer;"></i></a></td>
+                                                <td class="tableIconCellDel"><div onclick="togglePopup()"><?php $userNameDel = $row["full_name"]; $id = $row["id"] ?><i class="fa-solid fa-user-minus" style="cursor: pointer;"></i></div></td>
                                             </tr>
                                         <?php
                                     }
@@ -165,17 +231,42 @@
                         ?>
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td class="tableFooterId"></td>
-                            <td class="tableFooter"></td>
-                            <td class="tableFooterId"></td>
-                        </tr>
+                         <tr>
+                             <td class="tableIdCell"></td><td class="tableNameCell"></td>
+                             <th class="tableEmailCell">Nutzer hinzufügen</th>
+                             <td class="tableUserCell"></td>
+                             <td class="tableIconCellAdd"><a href="user-add.php"><i class="fa-solid fa-user-plus"></i></a></td>
+                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
         
+        <?php
+            
+        ?>
+
+        <div class="popupUPC" id="popup-userPwChange">
+            <div class="popupUPC-overlay"></div>
+            <div class="popupUPC-content">
+                <div class="popupUPC-closeBtn" onclick="togglePopup()">&times;</div>
+                <h3>Sind Sie sicher, dass Sie den Nutzer<br> <?php echo $_GET[""] ?><br>entfernen möchten?</h3><br>
+                <div class="confirmBtns">
+                    <div onclick="togglePopup()"><a href="user-control.php?del=<?php echo $row["id"] ?>"><i class="fa-solid fa-check" style="cursor: pointer;"></i></a></div>
+                    <div onclick="togglePopup()"><i class="fa-solid fa-xmark" style="cursor: pointer;"></i></div>
+                </div>
+            </div>
+        </div>
+
         <script type="text/javascript" src="../javascript/font.js"></script>
+
+        <script type="text/javascript">
+            function togglePopup() {
+                document.getElementById("popup-userPwChange").classList.toggle("active");
+            }
+        </script>
+
+        
 
 </body>
 
